@@ -1,13 +1,13 @@
-const ethers = require("ethers");
-const fs = require("fs-extra");
-require("dotenv").config();
+import { ethers } from "ethers";
+import * as fs from "fs-extra";
+import "dotenv/config";
 
 async function main() {
     // Connect to the chain
     const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
 
     // Set up the wallet
-    const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+    const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
     // const encryptedJson = fs.readFileSync("./.encryptedKey.json", "utf8");
     // let wallet = ethers.Wallet.fromEncryptedJsonSync(
     // 	encryptedJson,
@@ -28,8 +28,8 @@ async function main() {
     // Deploy the contract
     console.log("Deploying...");
     const contractFactory = new ethers.ContractFactory(abi, binary, wallet);
-    const contract = await contractFactory.deploy();
-    await contract.deploymentTransaction().wait(1);
+    const contract = await contractFactory.deploy() as any;
+    await contract.deploymentTransaction()!.wait(1);
     console.log("Deployed!");
 
     const address = await contract.getAddress();
